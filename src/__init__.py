@@ -1,0 +1,3 @@
+"""
+Drying Assistant package.
+""" 
