@@ -55,9 +55,11 @@ STABILITY_API_KEY=your_api_key_here
 
 ## Usage
 
-1. Start the application:
+### Running the Web Application
+
+1. Start the application using the run script:
 ```bash
-python -m src.app
+python run.py
 ```
 
 2. Open your browser and navigate to:
@@ -71,6 +73,23 @@ http://localhost:7860
    - View the processed images showing dried appearance
    - Use the reset button to start a new conversation
    - Download processed images using the download button
+
+### Processing Test Images
+
+You can process test images using the enhanced image dryer without starting the web application:
+
+```bash
+# Process images using Stability AI API
+python -m src.process_images
+
+# Process images using local fallback method (no API call)
+python -m src.process_images --fallback
+
+# Alternative processing tool
+python -m src.tools.process_with_enhanced_dryer
+```
+
+Processed images will be saved to the `test_results` directory.
 
 ## Test Images
 
@@ -91,12 +110,28 @@ Feel free to experiment with your own images and prompts!
 ### Project Structure
 ```
 .
-├── src/                # Source code
-├── tests/             # Test files
-├── test_images/       # Sample images for testing
-├── .env.example       # Environment variables template
-├── requirements.txt   # Project dependencies
-└── README.md         # Documentation
+├── src/                # Source code directory
+│   ├── __init__.py
+│   ├── app.py           # Main application
+│   ├── chat_model.py    # Chat model implementation
+│   ├── drying_agent.py  # Drying agent implementation
+│   ├── enhanced_image_dryer.py  # Enhanced image processing
+│   ├── image_dryer.py   # Image drying implementation
+│   ├── process_images.py  # Image processing script
+│   └── tools/           # Utility tools
+│       └── process_with_enhanced_dryer.py  # Enhanced image processing tool
+├── tests/               # Test directory
+│   ├── test_drying_agent.py
+│   └── test_drying_assistant.py
+├── test_images/         # Sample images for testing
+│   ├── kitten.jpg
+│   └── tomato.jpg
+├── .env.example         # Environment variables template
+├── .gitignore           # Git ignore file
+├── requirements.txt     # Project dependencies
+├── run.py               # Application launcher script
+├── setup.py             # Python package configuration
+└── README.md            # Documentation
 ```
 
 ### Running Tests
