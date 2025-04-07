@@ -141,7 +141,7 @@ def main():
     interface = app.create_interface()
     interface.launch(
         server_name="0.0.0.0",
-        server_port=7861,
+        server_port=7862,
         share=False,  # Disable sharing to avoid cross-origin issues
         show_error=True,
         allowed_paths=["test_images"],  # Allow access to test images

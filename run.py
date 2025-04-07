@@ -19,13 +19,13 @@ def check_api_keys():
         print("Warning: OPENROUTER_API_KEY is not set in your .env file.")
         print("Chat functionality may not work properly.")
     else:
-        print(f"✓ OpenRouter API key found: {openrouter_key[:5]}...{openrouter_key[-5:] if len(openrouter_key) > 10 else ''}")
+        print(f"[OK] OpenRouter API key found: {openrouter_key[:5]}...{openrouter_key[-5:] if len(openrouter_key) > 10 else ''}")
     
     if not stability_key:
         print("Warning: STABILITY_API_KEY is not set in your .env file.")
         print("Image drying functionality may not work properly.")
     else:
-        print(f"✓ Stability AI API key found: {stability_key[:5]}...{stability_key[-5:] if len(stability_key) > 10 else ''}")
+        print(f"[OK] Stability AI API key found: {stability_key[:5]}...{stability_key[-5:] if len(stability_key) > 10 else ''}")
     
     return openrouter_key and stability_key
 
@@ -43,15 +43,14 @@ def main():
             sys.exit(1)
     
     # Import here to avoid circular imports
-    from src.app import create_app
+    from src.app import DryingApp, main as app_main
     
     print("\nStarting Drying Assistant application...")
-    print("The web interface will be available at http://localhost:7860")
+    print("The web interface will be available at http://localhost:7862")
     print("Press Ctrl+C to stop the application.")
     
-    # Create and run the app
-    app = create_app()
-    app.launch(share=False)
+    # Run the app using the main function from app.py
+    app_main()
 
 if __name__ == "__main__":
     main()
