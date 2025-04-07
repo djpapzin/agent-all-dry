@@ -10,7 +10,7 @@ class DryingAgent:
         """Initialize the DryingAgent with chat model and image processor."""
         self.chat_model = ChatOpenAI(
             base_url="https://openrouter.ai/api/v1",
-            model_name="google/gemini-2.5-pro-exp-03-25:free",
+            model_name="google/gemini-pro",
             openai_api_key=os.getenv("OPENROUTER_API_KEY"),
             temperature=0.7
         )

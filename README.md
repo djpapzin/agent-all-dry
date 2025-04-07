@@ -12,6 +12,12 @@ An AI-powered assistant that helps you understand how to dry different items and
 - 🔄 Real-time image processing
 - 📱 Responsive design for all devices
 
+## Application Screenshot
+
+![Drying Assistant Interface](app_screenshot.png)
+
+*The Drying Assistant web interface showing the chat and image processing capabilities.*
+
 ## Prerequisites
 
 - Python 3.8 or higher
@@ -73,12 +79,6 @@ http://localhost:7860
    - View the processed images showing dried appearance
    - Use the reset button to start a new conversation
    - Download processed images using the download button
-
-### Application Screenshot
-
-![Drying Assistant Interface](app_screenshot.png)
-
-*The Drying Assistant web interface showing the chat and image processing capabilities.*
 
 ### Processing Test Images
 

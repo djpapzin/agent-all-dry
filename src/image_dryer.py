@@ -17,37 +17,51 @@ class ImageDryer:
         
     def preprocess_image(self, image: Image.Image) -> Image.Image:
         """Preprocess the image to meet API requirements."""
-        # Convert to RGB if needed
-        if image.mode != "RGB":
-            image = image.convert("RGB")
+        try:
+            # Convert to RGB if needed
+            if image.mode != "RGB":
+                image = image.convert("RGB")
+                
+            # Get current dimensions
+            width, height = image.size
             
-        # Get current dimensions
-        width, height = image.size
-        
-        # Calculate aspect ratio
-        aspect_ratio = width / height
-        
-        # Choose the best supported dimension based on aspect ratio
-        supported_dimensions = [
-            (1024, 1024),  # 1:1
-            (1152, 896),   # 1.29:1
-            (1216, 832),   # 1.46:1
-            (1344, 768),   # 1.75:1
-            (1536, 640),   # 2.4:1
-            (640, 1536),   # 1:2.4
-            (768, 1344),   # 1:1.75
-            (832, 1216),   # 1:1.46
-            (896, 1152)    # 1:1.29
-        ]
-        
-        # Find the closest aspect ratio
-        target_dims = min(supported_dimensions, 
-                         key=lambda dims: abs((dims[0]/dims[1]) - aspect_ratio))
-        
-        # Resize image to target dimensions
-        image = image.resize(target_dims, Image.Resampling.LANCZOS)
+            # Calculate aspect ratio
+            aspect_ratio = width / height
             
-        return image
+            # Define supported dimensions
+            supported_dimensions = [
+                (1024, 1024),  # 1:1
+                (1152, 896),   # 1.29:1
+                (1216, 832),   # 1.46:1
+                (1344, 768),   # 1.75:1
+                (1536, 640),   # 2.4:1
+                (640, 1536),   # 1:2.4
+                (768, 1344),   # 1:1.75
+                (832, 1216),   # 1:1.46
+                (896, 1152)    # 1:1.29
+            ]
+            
+            # Find the closest aspect ratio
+            target_dims = min(supported_dimensions, 
+                            key=lambda dims: abs((dims[0]/dims[1]) - aspect_ratio))
+            
+            # Print debug info
+            print(f"Original dimensions: {width}x{height}, aspect ratio: {aspect_ratio:.2f}")
+            print(f"Selected target dimensions: {target_dims[0]}x{target_dims[1]}")
+            
+            # Resize image to target dimensions using high-quality resampling
+            image = image.resize(target_dims, Image.Resampling.LANCZOS)
+            
+            # Verify final dimensions
+            final_width, final_height = image.size
+            if (final_width, final_height) not in supported_dimensions:
+                raise ValueError(f"Failed to resize to supported dimensions. Got {final_width}x{final_height}")
+                
+            return image
+            
+        except Exception as e:
+            print(f"Error in preprocess_image: {str(e)}")
+            raise
         
     def process_image(self, image: Image.Image) -> Optional[Image.Image]:
         """Process an image to make it appear dry using Stability AI API."""

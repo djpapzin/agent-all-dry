@@ -30,9 +30,13 @@ class DryingApp:
             # Update history with proper message format
             if not history:
                 history = []
+                
+            # Safely extract the assistant's response
+            assistant_response = messages[1]["content"] if len(messages) > 1 else "I apologize, but I couldn't process your message."
+            
             history.extend([
                 {"role": "user", "content": message},
-                {"role": "assistant", "content": messages[1]["content"]}
+                {"role": "assistant", "content": assistant_response}
             ])
             
             return history, processed_image
