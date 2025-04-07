@@ -1,10 +1,9 @@
 import os
 from typing import Optional, Tuple, List, Union
 from PIL import Image
-# Import from langchain directly for better compatibility
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import HumanMessage, SystemMessage, AIMessage
-from src.image_dryer import ImageDryer
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
+from .image_dryer import ImageDryer
 
 class DryingAgent:
     def __init__(self):
@@ -30,33 +29,36 @@ class DryingAgent:
     def process_message(self, message: str, image: Optional[Image.Image] = None) -> Tuple[list, Optional[Image.Image]]:
         """Process a user message and optional image, return response and processed image."""
         try:
-            self.current_image = image
+            if not message or not isinstance(message, str):
+                raise ValueError("Message must be a non-empty string")
             
-            # Create message history for the chat model
+            self.current_image = image
             messages = [self.system_prompt] + self.chat_history + [HumanMessage(content=message)]
             
-            # Get response from chat model
-            response = self.chat_model.predict_messages(messages)
+            response = self.chat_model.invoke(messages)
+            response_content = response.content if hasattr(response, 'content') else str(response)
             
-            # Process image if provided
             if image is not None:
                 self.processed_image = self.image_dryer.process_image(image)
             else:
                 self.processed_image = None
             
-            # Update chat history
             self.chat_history.append(HumanMessage(content=message))
-            self.chat_history.append(AIMessage(content=response.content))
+            self.chat_history.append(AIMessage(content=response_content))
             
-            # Return messages in Gradio chatbot format
+            if len(self.chat_history) > 20:
+                self.chat_history = self.chat_history[-20:]
+            
             return [
                 {"role": "user", "content": message},
-                {"role": "assistant", "content": response.content}
+                {"role": "assistant", "content": response_content}
             ], self.processed_image
             
+        except ValueError as ve:
+            return [{"role": "assistant", "content": f"Invalid input: {str(ve)}"}], None
         except Exception as e:
             print(f"Error in process_message: {str(e)}")
-            return [{"role": "assistant", "content": f"Error: {str(e)}"}], None
+            return [{"role": "assistant", "content": f"An error occurred: {str(e)}"}], None
     
     def reset(self):
         """Reset the agent's state."""

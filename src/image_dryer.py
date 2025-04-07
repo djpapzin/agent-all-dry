@@ -21,12 +21,31 @@ class ImageDryer:
         if image.mode != "RGB":
             image = image.convert("RGB")
             
-        # Resize if larger than 1024x1024
-        max_size = 1024
-        if max(image.size) > max_size:
-            ratio = max_size / max(image.size)
-            new_size = tuple(int(dim * ratio) for dim in image.size)
-            image = image.resize(new_size, Image.LANCZOS)
+        # Get current dimensions
+        width, height = image.size
+        
+        # Calculate aspect ratio
+        aspect_ratio = width / height
+        
+        # Choose the best supported dimension based on aspect ratio
+        supported_dimensions = [
+            (1024, 1024),  # 1:1
+            (1152, 896),   # 1.29:1
+            (1216, 832),   # 1.46:1
+            (1344, 768),   # 1.75:1
+            (1536, 640),   # 2.4:1
+            (640, 1536),   # 1:2.4
+            (768, 1344),   # 1:1.75
+            (832, 1216),   # 1:1.46
+            (896, 1152)    # 1:1.29
+        ]
+        
+        # Find the closest aspect ratio
+        target_dims = min(supported_dimensions, 
+                         key=lambda dims: abs((dims[0]/dims[1]) - aspect_ratio))
+        
+        # Resize image to target dimensions
+        image = image.resize(target_dims, Image.Resampling.LANCZOS)
             
         return image
         
