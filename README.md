@@ -74,6 +74,12 @@ http://localhost:7860
    - Use the reset button to start a new conversation
    - Download processed images using the download button
 
+### Application Screenshot
+
+![Drying Assistant Interface](app_screenshot.png)
+
+*The Drying Assistant web interface showing the chat and image processing capabilities.*
+
 ### Processing Test Images
 
 You can process test images using the enhanced image dryer without starting the web application:
