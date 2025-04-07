@@ -21,10 +21,10 @@ class DryingApp:
     ) -> Tuple[list, Optional[Image.Image]]:
         """Process user interaction and update chat history."""
         # Get response from agent
-        response, processed_image = self.agent.process_message(message, image)
+        messages, processed_image = self.agent.process_message(message, image)
         
         # Update history
-        history.append((message, response))
+        history.extend(messages)
         
         return history, processed_image
         

@@ -27,7 +27,7 @@ class DryingAgent:
         When users provide images, you should analyze them and suggest appropriate drying methods. 
         Always maintain a professional and helpful tone while focusing on drying-related queries.""")
     
-    def process_message(self, message: str, image: Optional[Image.Image] = None) -> Tuple[str, Optional[Image.Image]]:
+    def process_message(self, message: str, image: Optional[Image.Image] = None) -> Tuple[list, Optional[Image.Image]]:
         """Process a user message and optional image, return response and processed image."""
         self.current_image = image
         
@@ -47,7 +47,8 @@ class DryingAgent:
         self.chat_history.append(HumanMessage(content=message))
         self.chat_history.append(AIMessage(content=response.content))
         
-        return response.content, self.processed_image
+        # Return messages in Gradio chatbot format
+        return [{"role": "user", "content": message}, {"role": "assistant", "content": response.content}], self.processed_image
     
     def reset(self):
         """Reset the agent's state."""

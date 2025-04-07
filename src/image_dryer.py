@@ -36,40 +36,35 @@ class ImageDryer:
             # Preprocess the image
             processed_image = self.preprocess_image(image)
             
-            # Convert image to base64
+            # Convert image to bytes
             buffered = io.BytesIO()
             processed_image.save(buffered, format="PNG")
-            img_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+            img_bytes = buffered.getvalue()
             
             # Prepare the API request
             url = f"{self.api_host}/v1/generation/{self.engine_id}/image-to-image"
             
             headers = {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
                 "Authorization": f"Bearer {self.api_key}"
             }
             
-            body = {
+            files = {
+                "init_image": ("image.png", img_bytes, "image/png"),
+            }
+            
+            data = {
                 "image_strength": 0.35,
-                "init_image": img_base64,
-                "text_prompts": [
-                    {
-                        "text": "A completely dry version of this item, photorealistic, detailed texture, no water or moisture",
-                        "weight": 1
-                    },
-                    {
-                        "text": "wet, moist, damp, water droplets, puddles, stains",
-                        "weight": -1
-                    }
-                ],
+                "text_prompts[0][text]": "A completely dry version of this item, photorealistic, detailed texture, no water or moisture",
+                "text_prompts[0][weight]": 1,
+                "text_prompts[1][text]": "wet, moist, damp, water droplets, puddles, stains",
+                "text_prompts[1][weight]": -1,
                 "cfg_scale": 7,
                 "samples": 1,
                 "steps": 30
             }
             
             # Make the API request
-            response = requests.post(url, headers=headers, json=body)
+            response = requests.post(url, headers=headers, files=files, data=data)
             
             if response.status_code != 200:
                 raise Exception(f"API request failed: {response.text}")
