@@ -20,13 +20,28 @@ class DryingApp:
         history: list
     ) -> Tuple[list, Optional[Image.Image]]:
         """Process user interaction and update chat history."""
-        # Get response from agent
-        messages, processed_image = self.agent.process_message(message, image)
-        
-        # Update history
-        history.extend(messages)
-        
-        return history, processed_image
+        if not message.strip():
+            return history, None
+            
+        try:
+            # Get response from agent
+            messages, processed_image = self.agent.process_message(message, image)
+            
+            # Update history with proper message format
+            if not history:
+                history = []
+            history.extend([
+                {"role": "user", "content": message},
+                {"role": "assistant", "content": messages[1]["content"]}
+            ])
+            
+            return history, processed_image
+        except Exception as e:
+            print(f"Error in process_interaction: {str(e)}")
+            if not history:
+                history = []
+            history.append({"role": "assistant", "content": f"Error: {str(e)}"})
+            return history, None
         
     def reset_conversation(self):
         """Reset the conversation and agent state."""
@@ -35,7 +50,14 @@ class DryingApp:
         
     def create_interface(self):
         """Create and configure the Gradio interface."""
-        with gr.Blocks(title="Item Drying Assistant") as interface:
+        with gr.Blocks(
+            title="Item Drying Assistant",
+            theme=gr.themes.Soft(
+                primary_hue="blue",
+                secondary_hue="gray"
+            ),
+            css=".gradio-container {max-width: 1200px; margin: auto;}"
+        ) as interface:
             gr.Markdown("# Item Drying Assistant")
             gr.Markdown("Upload an image of a wet item and I'll help you dry it!")
             
@@ -44,25 +66,39 @@ class DryingApp:
                     chatbot = gr.Chatbot(
                         label="Chat History",
                         height=400,
-                        type="messages"
-                    )
-                    message = gr.Textbox(
-                        label="Your message",
-                        placeholder="Type your message here...",
-                        lines=2
+                        type="messages",
+                        show_label=True,
+                        layout="bubble",
+                        rtl=False,
+                        show_copy_button=True
                     )
                     with gr.Row():
-                        submit = gr.Button("Send")
-                        reset = gr.Button("Reset")
+                        message = gr.Textbox(
+                            label="Your message",
+                            placeholder="Type your message here...",
+                            lines=2,
+                            max_lines=10,
+                            show_label=True,
+                            container=True
+                        )
+                        submit = gr.Button("Send", variant="primary")
+                        reset = gr.Button("Reset", variant="secondary")
                         
                 with gr.Column(scale=1):
                     image_input = gr.Image(
                         label="Upload Image",
-                        type="pil"
+                        type="pil",
+                        show_label=True,
+                        container=True,
+                        height=300,
+                        sources=["upload", "clipboard"]
                     )
                     image_output = gr.Image(
                         label="Processed Image",
-                        type="pil"
+                        type="pil",
+                        show_label=True,
+                        container=True,
+                        height=300
                     )
             
             # Set up event handlers
@@ -71,6 +107,19 @@ class DryingApp:
                 inputs=[message, image_input, chatbot],
                 outputs=[chatbot, image_output],
                 api_name="process"
+            ).then(
+                fn=lambda: "",
+                outputs=[message]
+            )
+            
+            message.submit(
+                fn=self.process_interaction,
+                inputs=[message, image_input, chatbot],
+                outputs=[chatbot, image_output],
+                api_name="process_enter"
+            ).then(
+                fn=lambda: "",
+                outputs=[message]
             )
             
             reset.click(
@@ -89,7 +138,12 @@ def main():
     interface.launch(
         server_name="0.0.0.0",
         server_port=7860,
-        share=True
+        share=False,  # Disable sharing to avoid cross-origin issues
+        show_error=True,
+        allowed_paths=["test_images"],  # Allow access to test images
+        root_path=os.path.dirname(os.path.abspath(__file__)),  # Set root path
+        favicon_path=None,  # Disable favicon to prevent 404
+        quiet=True  # Reduce console output
     )
 
 if __name__ == "__main__":

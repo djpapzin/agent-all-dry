@@ -29,26 +29,34 @@ class DryingAgent:
     
     def process_message(self, message: str, image: Optional[Image.Image] = None) -> Tuple[list, Optional[Image.Image]]:
         """Process a user message and optional image, return response and processed image."""
-        self.current_image = image
-        
-        # Create message history for the chat model
-        messages = [self.system_prompt] + self.chat_history + [HumanMessage(content=message)]
-        
-        # Get response from chat model
-        response = self.chat_model.predict_messages(messages)
-        
-        # Process image if provided
-        if image is not None:
-            self.processed_image = self.image_dryer.process_image(image)
-        else:
-            self.processed_image = None
-        
-        # Update chat history
-        self.chat_history.append(HumanMessage(content=message))
-        self.chat_history.append(AIMessage(content=response.content))
-        
-        # Return messages in Gradio chatbot format
-        return [{"role": "user", "content": message}, {"role": "assistant", "content": response.content}], self.processed_image
+        try:
+            self.current_image = image
+            
+            # Create message history for the chat model
+            messages = [self.system_prompt] + self.chat_history + [HumanMessage(content=message)]
+            
+            # Get response from chat model
+            response = self.chat_model.predict_messages(messages)
+            
+            # Process image if provided
+            if image is not None:
+                self.processed_image = self.image_dryer.process_image(image)
+            else:
+                self.processed_image = None
+            
+            # Update chat history
+            self.chat_history.append(HumanMessage(content=message))
+            self.chat_history.append(AIMessage(content=response.content))
+            
+            # Return messages in Gradio chatbot format
+            return [
+                {"role": "user", "content": message},
+                {"role": "assistant", "content": response.content}
+            ], self.processed_image
+            
+        except Exception as e:
+            print(f"Error in process_message: {str(e)}")
+            return [{"role": "assistant", "content": f"Error: {str(e)}"}], None
     
     def reset(self):
         """Reset the agent's state."""
