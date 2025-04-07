@@ -46,7 +46,7 @@ def main():
     from src.app import DryingApp, main as app_main
     
     print("\nStarting Drying Assistant application...")
-    print("The web interface will be available at http://localhost:7862")
+    print("The web interface will be available at http://localhost:7860")
     print("Press Ctrl+C to stop the application.")
     
     # Run the app using the main function from app.py

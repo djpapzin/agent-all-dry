@@ -11,6 +11,7 @@ An AI-powered assistant that helps you understand how to dry different items and
 - 🎯 User-friendly interface with Gradio
 - 🔄 Real-time image processing
 - 📱 Responsive design for all devices
+- 🐳 Docker support for easy deployment
 
 ## Application Screenshot
 
@@ -23,7 +24,73 @@ An AI-powered assistant that helps you understand how to dry different items and
 - Python 3.8 or higher
 - OpenRouter API key
 - Stability AI API key
-- Virtual environment (recommended)
+- Docker and Docker Compose (optional, for containerized deployment)
+- Virtual environment (for local development)
+
+## Deployment Options
+
+### 1. Docker Deployment (Recommended)
+
+1. Clone the repository:
+```bash
+git clone https://github.com/L-fanampe/agent-all-dry.git
+cd agent-all-dry
+```
+
+2. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env and add your API keys
+```
+
+3. Build and run with Docker Compose:
+```bash
+docker-compose up -d
+```
+
+The application will be available at `http://localhost:7862`
+
+To stop the application:
+```bash
+docker-compose down
+```
+
+### 2. Local Development Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/L-fanampe/agent-all-dry.git
+cd agent-all-dry
+```
+
+2. Create and activate a virtual environment:
+```bash
+# Windows
+python -m venv venv
+.\venv\Scripts\activate
+
+# Linux/MacOS
+python -m venv venv
+source venv/bin/activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env and add your API keys
+```
+
+5. Run the application:
+```bash
+python -m src.app
+```
+
+The application will be available at `http://localhost:7862`
 
 ## Setup
 
