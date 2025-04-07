@@ -10,8 +10,10 @@ import sys
 import datetime
 from PIL import Image
 from pathlib import Path
-from enhanced_image_dryer import EnhancedImageDryer
 from dotenv import load_dotenv
+
+# Import the enhanced image dryer
+from src.enhanced_image_dryer import EnhancedImageDryer
 
 # Load environment variables
 load_dotenv()
