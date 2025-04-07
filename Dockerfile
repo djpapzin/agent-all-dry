@@ -20,11 +20,11 @@ COPY . .
 
 # Set environment variables
 ENV PYTHONPATH=/app
-ENV PORT=7860
+ENV PORT=7862
 ENV HOST=0.0.0.0
 
 # Expose port
-EXPOSE 7860
+EXPOSE 7862
 
 # Run the application
-CMD ["python", "app.py"] 
+CMD ["python", "-m", "src.app"] 
