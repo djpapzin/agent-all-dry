@@ -13,7 +13,10 @@ An AI-powered assistant that helps you understand how to dry different items and
 - 📱 Responsive design for all devices
 - 🐳 Docker support for easy deployment
 
-## Live Demo: https://drying-assistant.onrender.com
+## Live Demo
+
+- Render: https://drying-assistant.onrender.com
+- Hugging Face Spaces: https://huggingface.co/spaces/DjPapzin/agent-all-dry
 
 ![Drying Assistant Interface](app_screenshot.png)
 
