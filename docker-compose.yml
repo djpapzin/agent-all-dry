@@ -2,15 +2,24 @@ version: '3.8'
 
 services:
   drying-assistant:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "7862:7862"
+      - "7860:7860"
     environment:
-      - PORT=7862
-      - HOST=0.0.0.0
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
       - STABILITY_API_KEY=${STABILITY_API_KEY}
+      - PORT=${PORT}
+      - HOST=${HOST}
+      - DEBUG=${DEBUG}
     volumes:
       - ./test_images:/app/test_images
       - ./test_results:/app/test_results
-    restart: unless-stopped 
+    restart: always
+    networks:
+      - drying-network
+
+networks:
+  drying-network:
+    driver: bridge 
