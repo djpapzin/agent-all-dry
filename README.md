@@ -34,7 +34,7 @@ An AI-powered assistant that helps you understand how to dry different items and
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/L-fanampe/agent-all-dry.git
+git clone https://github.com/djpapzin/agent-all-dry.git
 cd agent-all-dry
 ```
 
@@ -49,7 +49,7 @@ cp .env.example .env
 docker-compose up -d
 ```
 
-The application will be available at `http://localhost:7862`
+The application will be available at `http://localhost:7860`
 
 To stop the application:
 ```bash
@@ -60,7 +60,7 @@ docker-compose down
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/L-fanampe/agent-all-dry.git
+git clone https://github.com/djpapzin/agent-all-dry.git
 cd agent-all-dry
 ```
 
@@ -91,13 +91,13 @@ cp .env.example .env
 python -m src.app
 ```
 
-The application will be available at `http://localhost:7862`
+The application will be available at `http://localhost:7860`
 
 ## Setup
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/L-fanampe/agent-all-dry.git
+git clone https://github.com/djpapzin/agent-all-dry.git
 cd agent-all-dry
 ```
 
@@ -201,11 +201,12 @@ Feel free to experiment with your own images and prompts!
 │   ├── kitten.jpg
 │   └── tomato.jpg
 ├── .env.example         # Environment variables template
-├── .gitignore           # Git ignore file
+├── .gitignore          # Git ignore file
 ├── requirements.txt     # Project dependencies
-├── run.py               # Application launcher script
-├── setup.py             # Python package configuration
-└── README.md            # Documentation
+├── run.py              # Application launcher script
+├── setup.py            # Python package configuration
+├── LICENSE             # MIT License file
+└── README.md           # Documentation
 ```
 
 ### Running Tests
@@ -249,7 +250,7 @@ isort src/ tests/
 
 ## License
 
-MIT License - See LICENSE file for details
+This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
 
 ## Author
 
