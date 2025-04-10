@@ -13,9 +13,10 @@ An AI-powered assistant that helps you understand how to dry different items and
 - 📱 Responsive design for all devices
 - 🐳 Docker support for easy deployment
 
-## Application Screenshot
+## Live Demo: https://drying-assistant.onrender.com
 
 ![Drying Assistant Interface](app_screenshot.png)
+
 
 *The Drying Assistant web interface showing the chat and image processing capabilities.*
 
