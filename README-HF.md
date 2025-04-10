@@ -34,4 +34,4 @@ Please set these environment variables in your Hugging Face Space settings.
 
 ## Author
 
-DJ Papzin (L.fanampe@gmail.com)
+DJ Papzin (djpapzin@github.com)

@@ -17,7 +17,6 @@ An AI-powered assistant that helps you understand how to dry different items and
 
 ![Drying Assistant Interface](app_screenshot.png)
 
-
 *The Drying Assistant web interface showing the chat and image processing capabilities.*
 
 ## Prerequisites
@@ -93,77 +92,40 @@ python -m src.app
 
 The application will be available at `http://localhost:7860`
 
-## Setup
+## Project Structure
+```
+.
+├── src/                # Source code directory
+│   ├── __init__.py
+│   ├── app.py         # Main application
+│   ├── drying_agent.py  # Drying agent implementation
+│   └── image_dryer.py   # Image drying implementation
+├── test_images/       # Sample images for testing
+│   ├── kitten.jpg
+│   └── tomato.jpg
+├── .env.example       # Environment variables template
+├── .gitignore        # Git ignore file
+├── docker-compose.yml # Docker compose configuration
+├── Dockerfile        # Docker configuration
+├── requirements.txt  # Project dependencies
+├── setup.py         # Python package configuration
+├── LICENSE          # MIT License file
+└── README.md        # Documentation
+```
 
-1. Clone the repository:
+## Installation Options
+
+### 1. Using Docker (Recommended)
+Follow the Docker deployment instructions above.
+
+### 2. Using pip and setup.py
 ```bash
-git clone https://github.com/djpapzin/agent-all-dry.git
-cd agent-all-dry
+# Install in development mode
+pip install -e .
+
+# Install in production mode
+pip install .
 ```
-
-2. Create and activate a virtual environment:
-```bash
-# Windows
-python -m venv venv
-.\venv\Scripts\activate
-
-# Linux/MacOS
-python -m venv venv
-source venv/bin/activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Set up environment variables:
-```bash
-# Copy the example environment file
-cp .env.example .env
-
-# Edit .env and add your API keys
-OPENROUTER_API_KEY=your_api_key_here
-STABILITY_API_KEY=your_api_key_here
-```
-
-## Usage
-
-### Running the Web Application
-
-1. Start the application using the run script:
-```bash
-python run.py
-```
-
-2. Open your browser and navigate to:
-```
-http://localhost:7860
-```
-
-3. Using the interface:
-   - Upload images using the file upload component
-   - Type your questions in the chat interface
-   - View the processed images showing dried appearance
-   - Use the reset button to start a new conversation
-   - Download processed images using the download button
-
-### Processing Test Images
-
-You can process test images using the enhanced image dryer without starting the web application:
-
-```bash
-# Process images using Stability AI API
-python -m src.process_images
-
-# Process images using local fallback method (no API call)
-python -m src.process_images --fallback
-
-# Alternative processing tool
-python -m src.tools.process_with_enhanced_dryer
-```
-
-Processed images will be saved to the `test_results` directory.
 
 ## Test Images
 
@@ -179,74 +141,24 @@ The repository includes sample images in the `test_images` directory that you ca
 
 Feel free to experiment with your own images and prompts!
 
-## Development
-
-### Project Structure
-```
-.
-├── src/                # Source code directory
-│   ├── __init__.py
-│   ├── app.py           # Main application
-│   ├── chat_model.py    # Chat model implementation
-│   ├── drying_agent.py  # Drying agent implementation
-│   ├── enhanced_image_dryer.py  # Enhanced image processing
-│   ├── image_dryer.py   # Image drying implementation
-│   ├── process_images.py  # Image processing script
-│   └── tools/           # Utility tools
-│       └── process_with_enhanced_dryer.py  # Enhanced image processing tool
-├── tests/               # Test directory
-│   ├── test_drying_agent.py
-│   └── test_drying_assistant.py
-├── test_images/         # Sample images for testing
-│   ├── kitten.jpg
-│   └── tomato.jpg
-├── .env.example         # Environment variables template
-├── .gitignore          # Git ignore file
-├── requirements.txt     # Project dependencies
-├── run.py              # Application launcher script
-├── setup.py            # Python package configuration
-├── LICENSE             # MIT License file
-└── README.md           # Documentation
-```
-
-### Running Tests
-```bash
-# Run all tests
-pytest tests/
-
-# Run tests with coverage
-pytest --cov=src tests/
-```
-
-### Code Quality
-```bash
-# Format code
-black src/ tests/
-
-# Lint code
-flake8 src/ tests/
-
-# Sort imports
-isort src/ tests/
-```
-
 ## Dependencies
 
-- langchain: For AI conversation handling
-- gradio: For the web interface
-- stability-sdk: For image processing via API
-- python-dotenv: For environment variable management
-- pytest: For testing
-- pillow: For image processing
-- black, flake8, isort: For code quality
+Core dependencies (as defined in setup.py):
+- langchain>=0.1.0: For AI conversation handling
+- langchain-community>=0.0.10: For community extensions
+- openai>=1.0.0: For OpenAI API integration
+- gradio>=4.0.0: For the web interface
+- diffusers>=0.24.0: For image processing
+- python-dotenv>=1.0.0: For environment variable management
+- pillow>=10.0.0: For image processing
+- torch>=2.0.0: For machine learning operations
+- transformers>=4.30.0: For AI model handling
 
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Development dependencies:
+- pytest>=7.0.0: For testing
+- black>=23.0.0: For code formatting
+- flake8>=6.0.0: For code linting
+- isort>=5.12.0: For import sorting
 
 ## License
 
